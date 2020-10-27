@@ -59,7 +59,8 @@ class HtmlWebpackPlugin {
       meta: {},
       base: false,
       title: 'Webpack App',
-      xhtml: false
+      xhtml: false,
+      svg: false,
     };
 
     /** @type {ProcessedHtmlWebpackOptions} */
@@ -710,7 +711,7 @@ class HtmlWebpackPlugin {
       voidTag: false,
       attributes: {
         defer: this.options.scriptLoading !== 'blocking',
-        src: scriptAsset
+        [this.options.svg ? 'href' : 'src']: scriptAsset
       }
     }));
   }
@@ -721,14 +722,22 @@ class HtmlWebpackPlugin {
    * @returns {Array<HtmlTagObject>}
    */
   generateStyleTags (cssAssets) {
-    return cssAssets.map(styleAsset => ({
-      tagName: 'link',
-      voidTag: true,
-      attributes: {
-        href: styleAsset,
-        rel: 'stylesheet'
+    return cssAssets.map(styleAsset => {
+      const tag = {
+        tagName: 'link',
+        voidTag: !this.options.svg,
+        attributes: {
+          href: styleAsset,
+          rel: 'stylesheet',
+        }
+      };
+
+      if (this.options.svg) {
+        tag.attributes.xmlns = 'http://www.w3.org/1999/xhtml'
       }
-    }));
+
+      return tag;
+    });
   }
 
   /**

@@ -157,6 +157,10 @@ declare namespace HtmlWebpackPlugin {
      */
     xhtml: boolean;
     /**
+     * Use href instead of src for script tags e.g. <script href="..." />
+     */
+    svg: boolean;
+    /**
      * In addition to the options actually used by this plugin, you can use this hash to pass arbitrary data through
      * to your template.
      */
